@@ -152,4 +152,4 @@ To add your own tracks, edit the `tracklist` list in the `tracklist_display.py` 
 ```
 
 ---
-Made with ❤️ by [@fergus586](https://github.com/fergus586) 
+Made by [@fergus586](https://github.com/fergus586) 
