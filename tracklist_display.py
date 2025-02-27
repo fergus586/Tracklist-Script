@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 """
-A beautiful tracklist display programme that shows your music collection with style!
-This programme helps you display and manage your tracklist with cool visual effects,
-perfect for DJs and music enthusiasts.
+CLI tool for displaying music tracklists with visual styling.
+Designed for DJs and music enthusiasts to manage and present their playlists.
 """
 
 import time
@@ -13,7 +12,7 @@ import sys
 
 # Colours to make the display look beautiful
 class Colours:
-    """Pretty colours to make the text look nice in your terminal"""
+    """ANSI color codes for terminal output"""
     RESET = '\033[0m'      # Returns text colour to normal
     BOLD = '\033[1m'       # Makes text bold
     RED = '\033[91m'       # Makes text red
@@ -25,31 +24,13 @@ class Colours:
     WHITE = '\033[97m'     # Makes text white
 
 def clear_screen():
-    """Cleans up the terminal screen to make room for our display"""
+    """Clear terminal screen"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# Your music tracklist - each line should be "Artist Name - Track Title"
+# Your tracklist - each line should be "Artist Name - Track Title"
 tracklist = [
-    "Mosca - From ere Til Eternity",
-    "LWS - Gum Seleks",
-    "Ploy - Ramos",
-    "Verraco - Godspeed >",
-    "Batu - Zeal",
-    "Yaleesa Hall - Wet Woofers",
-    "Dom Carlo & SSSLIP - Leech",
-    "Doctor Jeep - Reso Danz (Hodge Remix)",
-    "Danvers - Cascade",
-    "DJ Double Oh! - Desvelo",
-    "Tom VR - Function",
-    "Doctor Jeep - Macumba (Wata Igarashi remix)",
-    "Amaliah - Labyrinth",
-    "Aquarian - Kool Ranch FM",
-    "Nouveau Monica - See The Light (Hodge Remix)",
-    "Hyas & Jacky Jeane - Gang Got Turn Up",
-    "Spice Merchants - Little Bit Dub (Surrealist Remix)",
-    "Doctor Jeep - Push The Body (Aquarian Remix)",
-    "SCALER - Deadlock (AQXDM Remix)",
-    "Forest Drive West - Cut and Run"
+    "Artist - Track Title",
+    "Two Shell - Mum Is Calling"
 ]
 
 def print_header():
@@ -58,7 +39,7 @@ def print_header():
  _____ ___  _   ___ _  ___    ___ ___ _____ 
 |_   _| _ \/ \ / __| |/ / |  |_ _/ __|_   _|
   | | |   / _ \ (__| ' <| |__ | |\__ \ | |  
-  |_| |_|_\_/ \_\___|_|\_\____|___|___/ |_|  
+  |_| |_|_\_/ \_\___|_|\_\____|___|___/|_|  
                                             
     """
     
@@ -68,13 +49,14 @@ def print_header():
 
 def display_track(index, track, is_current=False, secret_mode=False, revealed_tracks=None):
     """
-    Shows a single track in the list.
+    Display a single track with formatting.
     
-    - index: The track number (starting from 0)
-    - track: The track information ("Artist - Title")
-    - is_current: Whether this is the currently playing track
-    - secret_mode: Whether to hide upcoming tracks
-    - revealed_tracks: List of tracks that have been revealed in secret mode
+    Args:
+        index: Track number (0-based)
+        track: Track info in "Artist - Title" format
+        is_current: Whether this is the active track
+        secret_mode: Whether to hide upcoming tracks
+        revealed_tracks: List of revealed track indices
     """
     if revealed_tracks is None:
         revealed_tracks = []
@@ -110,11 +92,12 @@ def display_track(index, track, is_current=False, secret_mode=False, revealed_tr
 
 def display_progress_bar(current, total, width=40):
     """
-    Shows how far along we are in the tracklist
+    Display a progress bar showing playlist position.
     
-    - current: Which track we're on now
-    - total: Total number of tracks
-    - width: How wide to make the progress bar
+    Args:
+        current: Current track number
+        total: Total tracks
+        width: Progress bar width in characters
     """
     progress = int(width * current / total)
     bar = "█" * progress + "░" * (width - progress)
@@ -124,12 +107,13 @@ def display_progress_bar(current, total, width=40):
 
 def display_tracklist(current_track=-1, animate=True, secret_mode=False, revealed_tracks=None):
     """
-    Shows the full tracklist with optional animation
+    Display the full tracklist with optional effects.
     
-    - current_track: Which track to highlight as currently playing
-    - animate: Whether to show a cool animation when displaying tracks
-    - secret_mode: Whether to hide upcoming tracks
-    - revealed_tracks: Which tracks to show in secret mode
+    Args:
+        current_track: Index of currently playing track
+        animate: Enable animation when displaying tracks
+        secret_mode: Hide upcoming tracks
+        revealed_tracks: List of revealed track indices
     """
     clear_screen()
     print_header()
@@ -145,7 +129,7 @@ def display_tracklist(current_track=-1, animate=True, secret_mode=False, reveale
         display_progress_bar(current_track + 1, len(tracklist))
 
 def simulate_playback():
-    """Pretends to play through the tracklist, waiting for user input between tracks"""
+    """Interactive playback simulation with track-by-track progression"""
     for i in range(len(tracklist)):
         display_tracklist(i, animate=False)
         
@@ -153,10 +137,7 @@ def simulate_playback():
         input(f"\n{Colours.YELLOW}Press Enter for next track...{Colours.RESET}")
 
 def secret_playback():
-    """
-    Special mode that keeps upcoming tracks hidden until they're played.
-    Perfect for live sets where you want to keep the audience guessing!
-    """
+    """Secret mode that reveals tracks one by one - ideal for live sets"""
     print(f"{Colours.MAGENTA}🎵 SECRET MODE: Tracks will be revealed as they play! 🎵{Colours.RESET}")
     time.sleep(2)
     
@@ -172,7 +153,7 @@ def secret_playback():
         input(f"\n{Colours.YELLOW}Press Enter to reveal the {next_text}...{Colours.RESET}")
 
 def static_display():
-    """Shows the tracklist without any animation or special effects"""
+    """Display tracklist without effects or animation"""
     display_tracklist(animate=False)
     print(f"\n{Colours.YELLOW}Total tracks: {len(tracklist)}{Colours.RESET}")
 
